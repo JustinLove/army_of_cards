@@ -1,0 +1,30 @@
+{
+  "author": "wondible",
+  "build": "89755",
+  "category": ["titans"],
+  "context": "client",
+  "date": "2016/03/02",
+  "description": "Custom mods using Galactic War cards.",
+  "display_name": "Army of Cards - Client",
+  "forum": null,
+  "identifier": "com.wondible.pa.army_of_cards.client",
+  "priority": 100,
+  "scenes": {
+    "start": [
+      "coui://ui/mods/army_of_cards/start.js"
+    ],
+    "new_game": [
+      "coui://ui/mods/army_of_cards/new_game.js"
+    ],
+    "connect_to_game": [
+      "coui://ui/mods/army_of_cards/connect_to_game.js"
+    ],
+    "live_game": [
+      "coui://ui/mods/army_of_cards/live_game.js"
+    ]
+  },
+
+  "signature": "not yet implemented",
+  "version": "0.1.0"
+}
+
