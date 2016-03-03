@@ -17,17 +17,18 @@ define([
     'gwc_combat_bots',
   ]
 
-  var foo = function(cards, tag) {
+  var createFaction = function(cards, tag, commanders) {
     tag = tag || []
     var promise = $.Deferred()
     var inventory = new GWInventory()
     inventory.load({cards: cards.map(function(id) {return {id: id}})})
     inventory.applyCards(function() {
+      inventory.addUnits(commanders)
       console.log(inventory.units().length)
       console.log(inventory.mods().length)
       spec_loader.loadUnitSpecs(inventory.units(), tag).then(function(specs) {
         spec_loader.modSpecs(specs, inventory.mods(), tag)
-        console.log(specs)
+        //console.log(specs)
         promise.resolve(specs)
       })
     })
@@ -76,13 +77,16 @@ define([
 
   var load = function() {
     console.time('load data')
-    return $.when(
-      //uiFiles(),
-      foo(vehicles, '.vehicle'),
-      foo(bots, '.bot')
-    ).then(function() {
-      console.timeEnd('load data')
-      return spec_loader.cookFiles(Array.prototype.slice.call(arguments, 0))
+    return spec_loader.loadOrderedUnitList().then(function(ids) {
+      var commanders = ids.filter(function(id) {return id.match('/pa/units/commanders/')})
+      return $.when(
+        uiFiles(),
+        createFaction(vehicles, '.vehicle', commanders),
+        createFaction(bots, '.bot', commanders)
+      ).then(function() {
+        console.timeEnd('load data')
+        return spec_loader.cookFiles(Array.prototype.slice.call(arguments, 0))
+      })
     })
   }
 
