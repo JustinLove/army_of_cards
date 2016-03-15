@@ -16,6 +16,6 @@ require([
 
   window.army_of_cards = aoc
 
-  aoc.test()
+  //aoc.test()
 })
 
