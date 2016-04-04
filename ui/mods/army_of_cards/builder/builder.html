@@ -48,19 +48,6 @@ app.loadTemplate("coui://ui/main/game/galactic_war/shared/template/gwt_card_hori
     <div id="army-list" class="col">
       <div class="header" style="background: rgba(255, 255, 255, 0.3);"><loc>Armies</loc></div>
       <div class="col-padding">
-        <ul data-bind="foreach: armies">
-          <li class="army" data-bind="css: {selected: selected}, click: function() {$root.selectArmy($data)}">
-            <input type="text" data-bind="value: name"/>
-            <span data-bind="text: tag"></span>
-            <!--
-            <span data-bind="text: startCard"></span>
-            <ul data-bind="foreach: cards">
-              <li data-bind="text: $data"></li>
-            </ul>
-            -->
-          </li>
-        </ul>
-        <hr/>
         <div class="btn_std" data-bind="
           click: addArmy,
           click_sound: 'default',
@@ -70,6 +57,20 @@ app.loadTemplate("coui://ui/main/game/galactic_war/shared/template/gwt_card_hori
             <loc>Add Army</loc>
           </div>
         </div>
+        <ul data-bind="foreach: armies">
+          <li class="army" data-bind="css: {selected: selected}, click: function() {$root.selectArmy($data)}">
+            <input type="text" data-bind="value: name"/>
+            <span class="remove-army" title="remove" data-bind="click: function() {$root.removeArmy($data)}">x</span>
+            <br/>
+            <span data-bind="text: tag"></span>
+            <!--
+            <span data-bind="text: startCard"></span>
+            <ul data-bind="foreach: cards">
+              <li data-bind="text: $data"></li>
+            </ul>
+            -->
+          </li>
+        </ul>
       </div>
     </div>
     <div id="start-list" class="col">

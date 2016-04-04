@@ -29,10 +29,25 @@
 
 .army {
   padding: 0.5em;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .army.selected {
-  background-color: green;
+  background: rgb(30, 122, 161);
+  border: 1px solid #00B3FF;
+  box-shadow: inset 0px 0px 10px rgb(0, 179, 255);
+}
+
+.remove-army {
+  display: block;
+  float: right;
+  color: white;
+  padding: 0.3em;
+}
+
+.remove-army:hover {
+  color: white;
+  background: red;
 }
 
 .start-card,

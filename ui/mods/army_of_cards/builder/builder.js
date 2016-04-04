@@ -86,6 +86,16 @@ require([
         self.armies.push(new ArmyViewModel())
       }
 
+      self.removeArmy = function(army) {
+        var i = self.armies.indexOf(army)
+        if (i >= 0) {
+          self.armies.splice(i, 1)
+        }
+        if (army.selected()) {
+          self.selectArmy(self.armies()[0])
+        }
+      }
+
       self.currentArmy = ko.observable()
 
       self.currentArmy.subscribe(function(army) {
