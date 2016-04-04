@@ -62,7 +62,7 @@ define([
     }
   }
 
-  var uiFiles = function() {
+  var uiFiles = function(factions) {
     var files = {
       '/modinfo.json': modinfo()
     }
@@ -71,7 +71,12 @@ define([
         files[path.replace('coui:/', '')] = text
         return text
       })
-    })).then(function() {return files})
+    })).then(function() {
+      files['/modinfo.json'].scenes['new_game'].push('coui://ui/mods/army_of_cards/factions.js')
+      files['/ui/mods/army_of_cards/factions.js'] = "model.specTags(" + JSON.stringify(factions.map(function(f) {return f.tag})) + ")"
+      console.log(files)
+      return files
+    })
   }
 
   var writeZip = function(files) {
@@ -86,7 +91,7 @@ define([
     console.time('load data')
     return spec_loader.loadOrderedUnitList().then(function(ids) {
       var commanders = ids.filter(function(id) {return id.match('/pa/units/commanders/')})
-      var stuff = [uiFiles()]
+      var stuff = [uiFiles(factions)]
       factions.forEach(function(faction) {
         stuff.push(createFaction(faction.cards, faction.tag, commanders))
       })

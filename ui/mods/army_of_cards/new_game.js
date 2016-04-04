@@ -1,7 +1,7 @@
 (function() {
   "use strict";
 
-  model.specTags = ['.vehicle', '.bot']
+  model.specTags = ko.observableArray([])
   model.getSpecTagDescription = function(name) {
       return name.replace('.', '')
   };
