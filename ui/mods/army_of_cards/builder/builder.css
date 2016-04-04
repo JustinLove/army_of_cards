@@ -1,0 +1,55 @@
+.section_wrapper {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+}
+
+#army-list {
+  display: inline-block;
+}
+
+#card-list {
+  display: inline-block;
+}
+
+.header {
+  font-size: 2em;
+  text-align: left;
+  padding-top: 0px;
+  height: auto;
+  flex-shrink: 0;
+  font-family: 'Sansation Bold';
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 10px 0px 10px 0px;
+  padding: 0px 0px 0px 16px;
+  color: #00B3FF;
+  text-shadow: 0px 0px 20px #00B3FF;
+}
+
+.army {
+  padding: 0.5em;
+}
+
+.army.selected {
+  background-color: green;
+}
+
+.start-card,
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.8);
+}
+
+.start-card:hover,
+.card:hover {
+  border-color: rgb(0, 179, 255);
+  box-shadow: 0px 0px 50px rgba(0, 179, 255, 0.5);
+}
+
+.start-card.selected,
+.card.selected {
+  background: rgb(30, 122, 161);
+  border: 1px solid #00B3FF;
+  box-shadow: inset 0px 0px 10px rgb(0, 179, 255);
+}

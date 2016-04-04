@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+
+  <noloc><title>Army Of Cards</title></noloc>
+  <script src="bundle://boot/boot.js" type="text/javascript"></script>
+  <!-- optional, if you're going to use select boxes -->
+  <link href="bundle://boot/boot.css" rel="stylesheet" type="text/css" />
+  <!-- optional, if you're going to use select boxes -->
+  <link href="coui://ui/main/shared/css/template.css" rel="stylesheet" type="text/css" />
+  <link href="coui://ui/main/shared/css/landing_page.css" rel="stylesheet" type="text/css" />
+  <link href="builder.css" rel="stylesheet" type="text/css" />
+  <script src="builder.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<script id="cardTemplate">
+app.loadTemplate("coui://ui/main/game/galactic_war/shared/template/gwt_card_horizontal",
+                 "coui://ui/main/game/galactic_war/shared/template/gwt_card",
+                 "coui://ui/main/game/galactic_war/shared/template/gwt_card");
+</script>
+
+<!-- VISUAL TREATMENTS -->
+<div class="background_glow"></div>
+
+<!-- TITLE -->
+<div class="section_title">
+  <div class="content">
+    <div class="btn_std_ix btn_back_small" data-bind="click: back">
+      <span class="glyphicon glyphicon-chevron-left carat"></span>
+    </div>
+    <div class="title" data-bind="text: title">
+    </div>
+    <div class="content_titans_badge" style="display: none;" data-bind="visible: api.content.usingTitans">
+    </div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="section_content_top_bar">
+</div>
+<div class="section_content">
+  <div class="section_wrapper overall_width">
+    <div id="army-list" class="col">
+      <div class="header" style="background: rgba(255, 255, 255, 0.3);"><loc>Armies</loc></div>
+      <div class="col-padding">
+        <ul data-bind="foreach: armies">
+          <li class="army" data-bind="css: {selected: selected}, click: function() {$root.selectArmy($data)}">
+            <input type="text" data-bind="value: name"/>
+            <span data-bind="text: tag"></span>
+            <span data-bind="text: startCard"></span>
+            <ul data-bind="foreach: cards">
+              <li data-bind="text: $data"></li>
+            </ul>
+          </li>
+        </ul>
+        <hr/>
+        <div class="btn_std" data-bind="
+          click: addArmy,
+          click_sound: 'default',
+          rollover_sound: 'default',
+          ">
+          <div class="btn_label" style="padding: 0px 40px;">
+            <loc>Add Army</loc>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="start-list" class="col">
+      <div class="header" style="background: rgba(255, 255, 255, 0.3);"><loc>Start</loc></div>
+      <div class="col-padding">
+        <ul data-bind="foreach: startCards">
+          <li class="start-card" data-bind="css: {selected: selected}, click: function() {$root.selectStartCard(id)}">
+            <span data-bind="text: id"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="card-list" class="col">
+      <div class="header" style="background: rgba(255, 255, 255, 0.3);"><loc>Cards</loc></div>
+      <div class="col-padding">
+        <ul data-bind="foreach: cards">
+          <li class="card" data-bind="css: {selected: selected}, click: function() {$root.selectCard($data)}">
+            <span data-bind="text: id"></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMMIT -->
+<div class="div_commit_cont">
+  <div class="btn_hero" data-bind="
+    click: createArmies,
+    click_sound: 'default',
+    rollover_sound: 'default',
+    css: { btn_hero_disabled: !ready() }
+    ">
+    <div class="btn_label" style="padding: 0px 40px;">
+      <loc>Create Armies</loc>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+
