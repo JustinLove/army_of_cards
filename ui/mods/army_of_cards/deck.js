@@ -11,7 +11,7 @@ define([], function() {
       'gwc_start_allfactory',
     ],
     cards: [
-      'gwc_add_card_slot',
+      //'gwc_add_card_slot',
       'gwc_bld_efficiency_cdr',
       'gwc_bld_efficiency_fabs',
       'gwc_cost_air',
@@ -62,7 +62,7 @@ define([], function() {
       'gwc_speed_vehicles',
       'gwc_storage_1',
       'gwc_storage_and_buff',
-      'gwc_minion',
+      //'gwc_minion',
       'gwc_combat_structures',
       'gwc_combat_vehicles',
       'gwc_combat_sea',

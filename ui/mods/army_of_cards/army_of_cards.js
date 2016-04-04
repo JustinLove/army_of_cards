@@ -63,8 +63,11 @@ define([
   }
 
   var uiFiles = function(factions) {
+    var specTagsText = "model.specTags(" + JSON.stringify(factions.map(function(f) {return f.tag})) + ")"
     var files = {
-      '/modinfo.json': modinfo()
+      '/modinfo.json': modinfo(),
+      '/ui/mods/army_of_cards/factions.json': factions,
+      '/ui/mods/army_of_cards/spec_tags.js': specTagsText,
     }
     return $.when(_.flatten(_.values(files['/modinfo.json'].scenes)).map(function(path) {
       return $.get(path, null, null, 'text').then(function(text) {
@@ -72,9 +75,7 @@ define([
         return text
       })
     })).then(function() {
-      files['/modinfo.json'].scenes['new_game'].push('coui://ui/mods/army_of_cards/factions.js')
-      files['/ui/mods/army_of_cards/factions.js'] = "model.specTags(" + JSON.stringify(factions.map(function(f) {return f.tag})) + ")"
-      console.log(files)
+      files['/modinfo.json'].scenes['new_game'].push('coui://ui/mods/army_of_cards/spec_tags.js')
       return files
     })
   }
@@ -85,6 +86,14 @@ define([
       return 'com.wondible.pa.army_of_cards'+path
     })
     return file.zip.create(files, 'com.wondible.pa.army_of_cards.server.zip')
+  }
+
+  var readConfig = function() {
+    return file.zip.read('coui://download/com.wondible.pa.army_of_cards.server.zip').then(function(zip) {
+      return JSON.parse(zip.file('com.wondible.pa.army_of_cards/ui/mods/army_of_cards/factions.json').asText())
+    }, function(err) {
+      return null
+    })
   }
 
   var load = function(factions) {
@@ -113,6 +122,7 @@ define([
 
   return {
     write: write,
+    readConfig: readConfig,
     test: test,
   }
 })

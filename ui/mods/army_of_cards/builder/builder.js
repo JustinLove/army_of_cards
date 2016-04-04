@@ -20,14 +20,31 @@ require([
 
   window.army_of_cards = aoc
 
-  //aoc.test()
-
   $(document).ready(function() {
+    var empty = [
+      {
+        name: 'One',
+        tag: '.one',
+        start_card: 'gwc_start_vehicle',
+        cards: [
+          'gwc_start_vehicle',
+        ],
+      },
+      {
+        name: 'Two',
+        tag: '.two',
+        start_card: 'gwc_start_vehicle',
+        cards: [
+          'gwc_start_vehicle',
+        ]
+      },
+    ]
+
     var ArmyViewModel = function(name) {
       var self = this
       self.name = ko.observable(name || 'army')
       self.tag = ko.computed(function() {
-        return '.'+self.name().replace(/[^\w_]/, '')
+        return '.'+self.name().replace(/[^\w_]/, '').toLowerCase()
       })
       self.startCard = ko.observable(deck.startCards[0])
       self.cards = ko.observableArray([])
@@ -63,10 +80,7 @@ require([
       self.title = "Army of Cards"
       self.ready = ko.observable(true)
 
-      self.armies = ko.observableArray([
-        new ArmyViewModel('a'),
-        new ArmyViewModel('b'),
-      ])
+      self.armies = ko.observableArray([])
 
       self.addArmy = function() {
         self.armies.push(new ArmyViewModel())
@@ -115,7 +129,9 @@ require([
       self.createArmies = function() {
         var def = model.armies().map(function(army) {
           return {
+            name: army.name(),
             tag: army.tag(),
+            start_card: army.startCard(),
             cards: [army.startCard()].concat(army.cards())
           }
         })
@@ -123,12 +139,30 @@ require([
         aoc.write(def).always(function() {self.ready(true)})
       }
 
+      self.loadConfig = function(factions) {
+        self.armies(factions.map(function(conf) {
+          var army = new ArmyViewModel(conf.name)
+          army.startCard(conf.start_card)
+          army.cards(conf.cards)
+          army.removeCard(conf.start_card)
+          return army
+        }))
+        self.selectArmy(self.armies()[0])
+      }
+
       self.back = function() {
-        console.log('back')
         window.location.href = 'coui://ui/main/game/start/start.html';
       };
 
-      self.selectArmy(self.armies()[0])
+      aoc.readConfig().then(function(config) {
+        if (config) {
+          self.loadConfig(config)
+        } else {
+          self.loadConfig(empty)
+        }
+      }, function(config) {
+        self.loadConfig(empty)
+      })
     }
 
     model = new BuilderViewModel();
