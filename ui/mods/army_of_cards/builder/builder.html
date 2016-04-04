@@ -52,10 +52,12 @@ app.loadTemplate("coui://ui/main/game/galactic_war/shared/template/gwt_card_hori
           <li class="army" data-bind="css: {selected: selected}, click: function() {$root.selectArmy($data)}">
             <input type="text" data-bind="value: name"/>
             <span data-bind="text: tag"></span>
+            <!--
             <span data-bind="text: startCard"></span>
             <ul data-bind="foreach: cards">
               <li data-bind="text: $data"></li>
             </ul>
+            -->
           </li>
         </ul>
         <hr/>

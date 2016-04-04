@@ -5,16 +5,23 @@ define([
 ], function(spec_loader, file, GWInventory) {
   "use strict";
 
-  var vehicles = [
-    'gwc_start_vehicle',
-    'gwc_enable_vehicles_all',
-    'gwc_combat_vehicles',
-  ]
-
-  var bots = [
-    'gwc_start_bot',
-    'gwc_enable_bots_all',
-    'gwc_combat_bots',
+  var testData = [
+    {
+      tag: '.vehicles',
+      cards: [
+        'gwc_start_vehicle',
+        'gwc_enable_vehicles_all',
+        'gwc_combat_vehicles',
+      ],
+    },
+    {
+      tag: '.bots',
+      cards: [
+        'gwc_start_bot',
+        'gwc_enable_bots_all',
+        'gwc_combat_bots',
+      ]
+    },
   ]
 
   var createFaction = function(cards, tag, commanders) {
@@ -75,27 +82,28 @@ define([
     return file.zip.create(files, 'com.wondible.pa.army_of_cards.server.zip')
   }
 
-  var load = function() {
+  var load = function(factions) {
     console.time('load data')
     return spec_loader.loadOrderedUnitList().then(function(ids) {
       var commanders = ids.filter(function(id) {return id.match('/pa/units/commanders/')})
-      return $.when(
-        uiFiles(),
-        createFaction(vehicles, '.vehicle', commanders),
-        createFaction(bots, '.bot', commanders)
-      ).then(function() {
+      var stuff = [uiFiles()]
+      factions.forEach(function(faction) {
+        stuff.push(createFaction(faction.cards, faction.tag, commanders))
+      })
+
+      return $.when.apply($, stuff).then(function() {
         console.timeEnd('load data')
         return spec_loader.cookFiles(Array.prototype.slice.call(arguments, 0))
       })
     })
   }
 
-  var write = function() {
-    return load().then(writeZip)
+  var write = function(factions) {
+    return load(factions).then(writeZip)
   }
 
-  var test = function() {
-    return load().then(function(files) {console.log(files)})
+  var test = function(factions) {
+    return load(factions || testData).then(function(files) {console.log(files)})
   }
 
   return {

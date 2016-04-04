@@ -61,7 +61,7 @@ require([
       var self = this
 
       self.title = "Army of Cards"
-      self.ready = ko.observable(false)
+      self.ready = ko.observable(true)
 
       self.armies = ko.observableArray([
         new ArmyViewModel('a'),
@@ -113,6 +113,14 @@ require([
       }
 
       self.createArmies = function() {
+        var def = model.armies().map(function(army) {
+          return {
+            tag: army.tag(),
+            cards: [army.startCard()].concat(army.cards())
+          }
+        })
+        self.ready(false)
+        aoc.write(def).always(function() {self.ready(true)})
       }
 
       self.back = function() {
