@@ -1,8 +1,9 @@
 define([
   'aoc/spec_loader',
   'aoc/file',
+  'aoc/community_mods',
   'shared/gw_inventory',
-], function(spec_loader, file, GWInventory) {
+], function(spec_loader, file, communityMods, GWInventory) {
   "use strict";
 
   var testData = [
@@ -31,8 +32,8 @@ define([
     inventory.load({cards: cards.map(function(id) {return {id: id}})})
     inventory.applyCards(function() {
       inventory.addUnits(commanders)
-      console.log(inventory.units().length)
-      console.log(inventory.mods().length)
+      //console.log(inventory.units().length)
+      //console.log(inventory.mods().length)
       spec_loader.loadUnitSpecs(inventory.units(), tag).then(function(specs) {
         spec_loader.modSpecs(specs, inventory.mods(), tag)
         //console.log(specs)
@@ -82,15 +83,24 @@ define([
 
   var writeZip = function(files) {
     //console.log(files)
+    var info = JSON.parse(files['/modinfo.json'])
+    info.installedPath = '/download/com.wondible.pa.army_of_cards.server.zip'
+    info.mountPath = '/server_mods/com.wondible.pa.army_of_cards.server/';
     files = _.mapKeys(files, function(value, path) {
-      return 'com.wondible.pa.army_of_cards'+path
+      //return 'com.wondible.pa.army_of_cards'+path
+      return path.slice(1)
     })
-    return file.zip.create(files, 'com.wondible.pa.army_of_cards.server.zip')
+    return file.zip.create(files, 'com.wondible.pa.army_of_cards.server.zip').then(function(status) {
+      info.md5 = status.md5
+      communityMods.register(info)
+      return status
+    })
   }
 
   var readConfig = function() {
     return file.zip.read('coui://download/com.wondible.pa.army_of_cards.server.zip').then(function(zip) {
-      return JSON.parse(zip.file('com.wondible.pa.army_of_cards/ui/mods/army_of_cards/factions.json').asText())
+      //return JSON.parse(zip.file('com.wondible.pa.army_of_cards/ui/mods/army_of_cards/factions.json').asText())
+      return JSON.parse(zip.file('ui/mods/army_of_cards/factions.json').asText())
     }, function(err) {
       return null
     })
