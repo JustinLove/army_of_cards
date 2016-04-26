@@ -20,6 +20,34 @@
     })
   })
 
+  // override
+  model.resetArmies = function () {
+    if (!model.isGameCreator())
+      return;
+
+    var spec_tag = ''
+    if (model.specTags().length > 0) {
+      spec_tag = model.specTags()[0]
+    }
+
+    if (model.isFFAGame()) {
+      model.send_message('reset_armies', [
+        { slots: 1, ai: false, alliance: false, spec_tag: spec_tag },
+        { slots: 1, ai: false, alliance: false, spec_tag: spec_tag }
+      ]);
+    }
+    else {
+      model.send_message('reset_armies', [
+        { slots: 2, ai: false, alliance: true, spec_tag: spec_tag },
+        { slots: 2, ai: false, alliance: true, spec_tag: spec_tag }
+      ]);
+    }
+
+    if (model.loadedSystemIsEmpty() && !model.updateSystemInProgress()) {
+      model.loadRandomSystem();
+    }
+  };
+
   var new_game_armies = handlers.armies
   handlers.armies = function(payload, force) {
     new_game_armies(payload, force)
