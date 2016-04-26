@@ -111,7 +111,15 @@
     });
   }
 
-  console.log('insert')
+  var new_game_server_mod_info_updated = handlers.server_mod_info_updated
+  handlers.server_mod_info_updated = function() {
+    new_game_server_mod_info_updated()
+
+    if (model.isGameCreator()) {
+      loadScript('coui://ui/mods/army_of_cards/spec_tags.js')
+    }
+  }
+
   $('.army-tools').append('<p data-bind="visible: $root.canChangeSettings()"><select data-bind="options: $root.specTags, optionsText: $root.getSpecTagDescription, selectPicker: army.specTag" data-width="106px"></p>')
   $('.army-tools').append('<p data-bind="visible: !$root.canChangeSettings(), text: army.specTagDescription" class="static-spec-tag"></p>')
 })()
