@@ -1,0 +1,11 @@
+.static-spec-tag {
+  width: 106px;
+  font-family: 'Sansation Bold';
+  font-size: 14px;
+  text-transform: none;
+  padding: 2px 8px;
+  float: right;
+  border: 1px solid #262626;
+  box-shadow: inset 0px 0px 8px rgba(255,255,255,.3);
+  margin-top: 1px;
+}

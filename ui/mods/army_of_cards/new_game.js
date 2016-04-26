@@ -1,9 +1,14 @@
 (function() {
   "use strict";
 
+  if (model.specTags) return
+
+  //model.canChangeSettings = ko.observable(false)
+
   model.specTags = ko.observableArray([])
   model.getSpecTagDescription = function(name) {
-      return name.replace('.', '')
+    if (!name) return ''
+    return name.replace('.', '')
   };
   model.thisPlayerSpecTag = ko.observable('')
   model.thisPlayerSpecTag.subscribe(function(newTag) {
@@ -42,6 +47,9 @@
             options: { spec_tag: tag }
           });
         })
+        self.specTagDescription = ko.computed(function() {
+          return model.getSpecTagDescription(self.specTag())
+        })
 
         self.asJson = function() {
           return {
@@ -75,5 +83,7 @@
     });
   }
 
-  $('.army-tools').append('<select data-bind="options: $root.specTags, optionsText: $root.getSpecTagDescription, selectPicker: army.specTag" data-width="106px">')
+  console.log('insert')
+  $('.army-tools').append('<p data-bind="visible: $root.canChangeSettings()"><select data-bind="options: $root.specTags, optionsText: $root.getSpecTagDescription, selectPicker: army.specTag" data-width="106px"></p>')
+  $('.army-tools').append('<p data-bind="visible: !$root.canChangeSettings(), text: army.specTagDescription" class="static-spec-tag"></p>')
 })()

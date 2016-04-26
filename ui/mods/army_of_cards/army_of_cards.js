@@ -6,6 +6,8 @@ define([
 ], function(spec_loader, file, communityMods, GWInventory) {
   "use strict";
 
+  var bakeUi = true
+
   var testData = [
     {
       tag: '.vehicles',
@@ -54,6 +56,7 @@ define([
       "version": "0.0.1",
       "scenes": {
         "new_game": [
+          "coui://ui/mods/army_of_cards/new_game.css",
           "coui://ui/mods/army_of_cards/new_game.js"
         ],
         "live_game": [
@@ -70,12 +73,21 @@ define([
       '/ui/mods/army_of_cards/factions.json': factions,
       '/ui/mods/army_of_cards/spec_tags.js': specTagsText,
     }
-    return $.when(_.flatten(_.values(files['/modinfo.json'].scenes)).map(function(path) {
-      return $.get(path, null, null, 'text').then(function(text) {
-        files[path.replace('coui:/', '')] = text
-        return text
-      })
-    })).then(function() {
+
+    var promise
+    if (bakeUi) {
+      promise = $.when(_.flatten(_.values(files['/modinfo.json'].scenes)).map(function(path) {
+        return $.get(path, null, null, 'text').then(function(text) {
+          files[path.replace('coui:/', '')] = text
+          return text
+        })
+      }))
+    } else {
+      promise = $.Deferred()
+      promise.resolve()
+    }
+
+    return promise.then(function() {
       files['/modinfo.json'].scenes['new_game'].push('coui://ui/mods/army_of_cards/spec_tags.js')
       return files
     })

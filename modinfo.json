@@ -14,6 +14,7 @@
       "coui://ui/mods/army_of_cards/start.js"
     ],
     "new_game": [
+      "coui://ui/mods/army_of_cards/new_game.css",
       "coui://ui/mods/army_of_cards/new_game.js"
     ],
     "connect_to_game": [
