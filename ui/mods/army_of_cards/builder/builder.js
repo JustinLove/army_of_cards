@@ -62,17 +62,22 @@ require([
       self.selected = ko.observable(false)
     }
 
-    var StartCardViewModel = function(id) {
-      var self = this
-      self.id = id
-      self.selected = ko.observable(false)
-    }
-
     var CardViewModel = function(id) {
       var self = this
       self.id = id
       self.selected = ko.observable(false)
+      self.summary = ko.observable(id)
+      self.desc = ko.observable('')
+      self.icon = ko.observable('')
+      require(['cards/'+id], function(card) {
+        self.card = card
+        self.summary(loc(card.summarize({})))
+        self.desc(loc(card.describe({})))
+        self.icon(card.icon({}))
+      })
     }
+
+    var StartCardViewModel = CardViewModel
 
     var BuilderViewModel = function() {
       var self = this

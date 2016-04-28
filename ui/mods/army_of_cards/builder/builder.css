@@ -6,10 +6,17 @@
 
 #army-list {
   display: inline-block;
+  overflow-y: scroll;
+}
+
+#start-list {
+  display: inline-block;
+  overflow-y: scroll;
 }
 
 #card-list {
   display: inline-block;
+  overflow-y: scroll;
 }
 
 .header {
@@ -54,6 +61,44 @@
 .card {
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.8);
+  max-width: 500px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+
+.start-card .icon-col,
+.card .icon-col {
+  width: 70px;
+  margin-right: 10px;
+}
+
+.start-card img,
+.card img {
+  width: 70px;
+  height: 70px;
+}
+
+.start-card .text-col,
+.card .text-col {
+  width: 400px;
+}
+
+.start-card .summary,
+.card .summary {
+  color: #fff;
+  font-size: 15px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.start-card .desc,
+.card .desc {
+  color: #ddd;
+  font-size: 11px;
 }
 
 .start-card:hover,
@@ -68,3 +113,4 @@
   border: 1px solid #00B3FF;
   box-shadow: inset 0px 0px 10px rgb(0, 179, 255);
 }
+
