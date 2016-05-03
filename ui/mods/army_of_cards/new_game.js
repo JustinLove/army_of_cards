@@ -6,10 +6,26 @@
   //model.canChangeSettings = ko.observable(false)
 
   model.specTags = ko.observableArray([])
+  model.tagNames = {}
   model.getSpecTagDescription = function(name) {
     if (!name) return ''
+    if (model.tagNames[name]) return model.tagNames[name]
     return name.replace('.', '')
   };
+  model.loadFactions = function() {
+    $.get('coui://ui/mods/army_of_cards/factions.json').then(function(factions) {
+      console.log(factions)
+      if (factions) {
+        model.tagNames = {}
+        var tags = []
+        factions.map(function(conf) {
+          tags.push(conf.tag)
+          model.tagNames[conf.tag] = conf.name
+        })
+        model.specTags(tags)
+      }
+    }, args)
+  }
   model.thisPlayerSpecTag = ko.observable('')
   model.thisPlayerSpecTag.subscribe(function(newTag) {
     api.game.getUnitSpecTag().then(function(oldTag) {
@@ -116,9 +132,11 @@
     new_game_server_mod_info_updated()
 
     if (model.isGameCreator()) {
-      loadScript('coui://ui/mods/army_of_cards/spec_tags.js')
+      model.loadFactions()
     }
   }
+
+  model.loadFactions()
 
   $('.army-tools').append('<p data-bind="visible: $root.canChangeSettings()"><select data-bind="options: $root.specTags, optionsText: $root.getSpecTagDescription, selectPicker: army.specTag" data-width="106px"></p>')
   $('.army-tools').append('<p data-bind="visible: !$root.canChangeSettings(), text: army.specTagDescription" class="static-spec-tag"></p>')

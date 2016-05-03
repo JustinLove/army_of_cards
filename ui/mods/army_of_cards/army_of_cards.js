@@ -67,11 +67,9 @@ define([
   }
 
   var uiFiles = function(factions) {
-    var specTagsText = "model.specTags(" + JSON.stringify(factions.map(function(f) {return f.tag})) + ")"
     var files = {
       '/modinfo.json': modinfo(),
       '/ui/mods/army_of_cards/factions.json': factions,
-      '/ui/mods/army_of_cards/spec_tags.js': specTagsText,
     }
 
     var promise
@@ -88,7 +86,6 @@ define([
     }
 
     return promise.then(function() {
-      files['/modinfo.json'].scenes['new_game'].push('coui://ui/mods/army_of_cards/spec_tags.js')
       return files
     })
   }

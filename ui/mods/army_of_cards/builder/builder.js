@@ -44,7 +44,7 @@ require([
       var self = this
       self.name = ko.observable(name || 'army')
       self.tag = ko.computed(function() {
-        return '.'+self.name().replace(/[^\w_]/, '').toLowerCase()
+        return '.'+self.name().replace(/\W/g, '').toLowerCase()
       })
       self.startCard = ko.observable(deck.startCards[0])
       self.cards = ko.observableArray([])
